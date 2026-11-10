@@ -320,8 +320,8 @@ dialog p { text-align: center; color: var(--text-2); font-family: var(--mono); f
   <div class="wrap">
     <a class="brand" href="#top" aria-label="Rohan Singh, home"><span class="brand-mark">RS</span>Rohan Singh</a>
     <div class="nav-links">
-      <a href="#work">Work</a>
       <a href="#plugins">Plugins</a>
+      <a href="#work">Work</a>
       <a href="#projects">Projects</a>
       <a href="#experience">Experience</a>
       <a href="#contact">Contact</a>
@@ -337,7 +337,7 @@ dialog p { text-align: center; color: var(--text-2); font-family: var(--mono); f
       <h1>I build the interfaces people use <em>inside Unreal Engine.</em></h1>
       <p class="lede">C++, UMG and Slate engineer. I've built XR apps, digital twin tools, editor utilities and Fab plugins that put native Slate widgets in the hands of Blueprint developers.</p>
       <div class="cta">
-        <a class="btn primary" href="#work">See my work
+        <a class="btn primary" href="#plugins">See my work
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
         </a>
         <a class="btn" href="Rohan_Singh_Resume.pdf" download>
@@ -365,78 +365,6 @@ dialog p { text-align: center; color: var(--text-2); font-family: var(--mono); f
 </header>
 
 <main>
-
-<!-- ============ FEATURED WORK ============ -->
-<section id="work">
-  <div class="wrap">
-    <div class="sec-head">
-      <div>
-        <p class="kicker">// featured work</p>
-        <h2>Selected UI work</h2>
-      </div>
-      <p>Tools built inside Unreal Engine, where the interface is the product.</p>
-    </div>
-
-    <article class="case">
-      <div class="gallery" data-gallery>
-        <figure class="shot">
-          <button type="button" data-open aria-label="Open screenshot full size">
-            <img data-main src="assets/work/twin-twins.webp" width="960" height="1117" alt="Twins view: a tree of digital twins on the left, and the properties of a live weather twin for Sösdala on the right">
-          </button>
-          <figcaption data-caption>Twins: live properties</figcaption>
-        </figure>
-        <div class="thumbs" role="group" aria-label="Screenshots">
-          <button type="button" aria-current="true" data-src="assets/work/twin-twins.webp" data-w="960" data-h="1117" data-caption="Twins: live properties" data-alt="Twins view: a tree of digital twins on the left, and the properties of a live weather twin for Sösdala on the right"><img src="assets/work/twin-twins.webp" alt="" loading="lazy"></button>
-          <button type="button" data-src="assets/work/twin-models.webp" data-w="960" data-h="1064" data-caption="Models: tree + JSON" data-alt="Models view: a searchable tree of model types beside the selected model's JSON definition"><img src="assets/work/twin-models.webp" alt="" loading="lazy"></button>
-          <button type="button" data-src="assets/work/twin-model-editor.webp" data-w="960" data-h="1110" data-caption="Model editor" data-alt="Model editor: model ID, base model, local and inherited properties next to the generated JSON"><img src="assets/work/twin-model-editor.webp" alt="" loading="lazy"></button>
-          <button type="button" data-src="assets/work/twin-search.webp" data-w="960" data-h="1119" data-caption="Filtered model search" data-alt="Models view filtered by a search term, showing matching model types"><img src="assets/work/twin-search.webp" alt="" loading="lazy"></button>
-        </div>
-      </div>
-      <div class="case-body">
-        <div class="case-num">01 · Unreal Engine · Azure Digital Twins</div>
-        <h3>Digital Twins Explorer</h3>
-        <p>An in-engine interface for working with Azure Digital Twins: browse model hierarchies, author models, and inspect live twins without leaving Unreal.</p>
-        <ul>
-          <li>Searchable model tree with inheritance (TwinBase → TwinObject → Sensor…)</li>
-          <li>Model editor that shows local and inherited properties alongside the generated JSON</li>
-          <li>Twin inspector with live values, such as a weather twin's temperature, humidity and wind</li>
-          <li>Relationship tools: fetch, highlight and find orphaned twins</li>
-        </ul>
-        <div class="tags"><span class="chip">Unreal Engine</span><span class="chip">Azure Digital Twins</span><span class="chip">UI design</span></div>
-      </div>
-    </article>
-
-    <article class="case">
-      <div class="videos">
-        <div class="yt" data-yt="ntNXZk-YeFU" data-title="Layout Visualizer 2.0">
-          <button type="button" aria-label="Play video: Layout Visualizer 2.0">
-            <img src="https://i.ytimg.com/vi/ntNXZk-YeFU/maxresdefault.jpg" alt="" loading="lazy">
-            <span class="play"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></span>
-            <span class="label">Layout Visualizer 2.0</span>
-          </button>
-        </div>
-        <div class="yt" data-yt="TUFSbFHGuJo" data-title="Layout Visualizer">
-          <button type="button" aria-label="Play video: Layout Visualizer">
-            <img src="https://i.ytimg.com/vi/TUFSbFHGuJo/hqdefault.jpg" alt="" loading="lazy">
-            <span class="play"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></span>
-            <span class="label">Layout Visualizer · v1</span>
-          </button>
-        </div>
-      </div>
-      <div class="case-body">
-        <div class="case-num">02 · Unreal Editor tool</div>
-        <h3>Layout Visualizer</h3>
-        <p>An editor tool for laying out building assemblies such as doors, windows and fixtures on a snapping grid, so layouts can be composed and adjusted visually instead of by hand.</p>
-        <ul>
-          <li>Assembly catalog to drag components onto the layout</li>
-          <li>Alignment and snapping controls with precise position adjustment</li>
-          <li>Version 2.0 keeps everything from v1 and adds new features, shown in the video</li>
-        </ul>
-        <div class="tags"><span class="chip">Unreal Editor</span><span class="chip">Editor tool</span><span class="chip">UI design</span></div>
-      </div>
-    </article>
-  </div>
-</section>
 
 <!-- ============ PLUGINS ============ -->
 <section id="plugins">
@@ -489,6 +417,78 @@ dialog p { text-align: center; color: var(--text-2); font-family: var(--mono); f
         </div>
       </article>
     </div>
+  </div>
+</section>
+
+<!-- ============ FEATURED WORK ============ -->
+<section id="work">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <p class="kicker">// featured work</p>
+        <h2>Selected UI work</h2>
+      </div>
+      <p>Tools built inside Unreal Engine, where the interface is the product.</p>
+    </div>
+
+    <article class="case">
+      <div class="videos">
+        <div class="yt" data-yt="ntNXZk-YeFU" data-title="Layout Visualizer 2.0">
+          <button type="button" aria-label="Play video: Layout Visualizer 2.0">
+            <img src="https://i.ytimg.com/vi/ntNXZk-YeFU/maxresdefault.jpg" alt="" loading="lazy">
+            <span class="play"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+            <span class="label">Layout Visualizer 2.0</span>
+          </button>
+        </div>
+        <div class="yt" data-yt="TUFSbFHGuJo" data-title="Layout Visualizer">
+          <button type="button" aria-label="Play video: Layout Visualizer">
+            <img src="https://i.ytimg.com/vi/TUFSbFHGuJo/hqdefault.jpg" alt="" loading="lazy">
+            <span class="play"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+            <span class="label">Layout Visualizer · v1</span>
+          </button>
+        </div>
+      </div>
+      <div class="case-body">
+        <div class="case-num">01 · Unreal Editor tool</div>
+        <h3>Layout Visualizer</h3>
+        <p>An editor tool for laying out building assemblies such as doors, windows and fixtures on a snapping grid, so layouts can be composed and adjusted visually instead of by hand.</p>
+        <ul>
+          <li>Assembly catalog to drag components onto the layout</li>
+          <li>Alignment and snapping controls with precise position adjustment</li>
+          <li>Version 2.0 keeps everything from v1 and adds new features, shown in the video</li>
+        </ul>
+        <div class="tags"><span class="chip">Unreal Editor</span><span class="chip">Editor tool</span><span class="chip">UI design</span></div>
+      </div>
+    </article>
+
+    <article class="case">
+      <div class="gallery" data-gallery>
+        <figure class="shot">
+          <button type="button" data-open aria-label="Open screenshot full size">
+            <img data-main src="assets/work/twin-twins.webp" width="960" height="1117" alt="Twins view: a tree of digital twins on the left, and the properties of a live weather twin for Sösdala on the right">
+          </button>
+          <figcaption data-caption>Twins: live properties</figcaption>
+        </figure>
+        <div class="thumbs" role="group" aria-label="Screenshots">
+          <button type="button" aria-current="true" data-src="assets/work/twin-twins.webp" data-w="960" data-h="1117" data-caption="Twins: live properties" data-alt="Twins view: a tree of digital twins on the left, and the properties of a live weather twin for Sösdala on the right"><img src="assets/work/twin-twins.webp" alt="" loading="lazy"></button>
+          <button type="button" data-src="assets/work/twin-models.webp" data-w="960" data-h="1064" data-caption="Models: tree + JSON" data-alt="Models view: a searchable tree of model types beside the selected model's JSON definition"><img src="assets/work/twin-models.webp" alt="" loading="lazy"></button>
+          <button type="button" data-src="assets/work/twin-model-editor.webp" data-w="960" data-h="1110" data-caption="Model editor" data-alt="Model editor: model ID, base model, local and inherited properties next to the generated JSON"><img src="assets/work/twin-model-editor.webp" alt="" loading="lazy"></button>
+          <button type="button" data-src="assets/work/twin-search.webp" data-w="960" data-h="1119" data-caption="Filtered model search" data-alt="Models view filtered by a search term, showing matching model types"><img src="assets/work/twin-search.webp" alt="" loading="lazy"></button>
+        </div>
+      </div>
+      <div class="case-body">
+        <div class="case-num">02 · Unreal Engine · Azure Digital Twins</div>
+        <h3>Digital Twins Explorer</h3>
+        <p>An in-engine interface for working with Azure Digital Twins: browse model hierarchies, author models, and inspect live twins without leaving Unreal.</p>
+        <ul>
+          <li>Searchable model tree with inheritance (TwinBase → TwinObject → Sensor…)</li>
+          <li>Model editor that shows local and inherited properties alongside the generated JSON</li>
+          <li>Twin inspector with live values, such as a weather twin's temperature, humidity and wind</li>
+          <li>Relationship tools: fetch, highlight and find orphaned twins</li>
+        </ul>
+        <div class="tags"><span class="chip">Unreal Engine</span><span class="chip">Azure Digital Twins</span><span class="chip">UI design</span></div>
+      </div>
+    </article>
   </div>
 </section>
 

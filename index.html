@@ -102,7 +102,7 @@ a { color: inherit; }
 .btn svg { width: 16px; height: 16px; flex: none; }
 
 /* ---------- hero ---------- */
-.hero { padding: 88px 0 72px; border-bottom: 1px solid var(--line); position: relative; overflow: hidden; perspective: 1400px; perspective-origin: 50% 40%; }
+.hero { padding: 88px 0 72px; border-bottom: 1px solid var(--line); position: relative; overflow: hidden; perspective: 1400px; perspective-origin: 50% 40%; scroll-margin-top: 64px; }
 .hero-floor {
   position: absolute; left: -35%; right: -35%; bottom: 0; height: 620px; pointer-events: none;
   background-image: linear-gradient(rgba(255,180,84,.24) 1px, transparent 1px), linear-gradient(90deg, rgba(255,180,84,.24) 1px, transparent 1px);
@@ -913,6 +913,23 @@ document.querySelectorAll('[data-yt]').forEach(el => {
     });
     if (again) kick();
   }
+})();
+
+// In-page links: always scroll (even when the URL already has that #hash), and
+// the name/logo goes to the very top of the page, clear of the sticky nav.
+(() => {
+  const smooth = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    const id = a.getAttribute('href').slice(1);
+    const target = id && id !== 'top' ? document.getElementById(id) : null;
+    if (id && id !== 'top' && !target) return;
+    e.preventDefault();
+    if (target) target.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
+    else window.scrollTo({ top: 0, behavior: smooth ? 'smooth' : 'auto' });
+    history.replaceState(null, '', target ? '#' + id : location.pathname + location.search);
+  });
 })();
 </script>
 </body>

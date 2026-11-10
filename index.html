@@ -116,6 +116,15 @@ a { color: inherit; }
   padding: 8px 11px; border-radius: 8px; background: rgba(32,33,36,.92); border: 1px solid var(--line-2); color: var(--text-2);
   box-shadow: 0 16px 30px -16px rgba(0,0,0,.8);
 }
+.motion-btn {
+  position: absolute; z-index: 3; top: 14px; left: 14px; transform: translateZ(100px);
+  display: inline-flex; align-items: center; gap: 7px; cursor: pointer;
+  font: 600 13px/1 var(--sans); padding: 9px 12px; border-radius: 999px;
+  background: var(--accent); color: var(--accent-ink); border: 0;
+  box-shadow: 0 10px 24px -10px rgba(0,0,0,.8);
+}
+.motion-btn[hidden] { display: none; }
+.motion-btn svg { width: 15px; height: 15px; }
 .float-tag.t1 { top: 26px; right: -34px; transform: translateZ(150px); color: var(--accent); border-color: rgba(255,180,84,.4); }
 .float-tag.t2 { top: 42%; right: -58px; transform: translateZ(95px); }
 .float-tag.t3 { top: 16%; left: -54px; transform: translateZ(110px); }
@@ -380,6 +389,10 @@ dialog p { text-align: center; color: var(--text-2); font-family: var(--mono); f
 
     <div class="hero-visual">
     <span class="float-tag t1" aria-hidden="true">VR · AR · MR</span>
+    <button class="motion-btn" id="motion-btn" type="button" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M3 8c-1.3 2.5-1.3 5.5 0 8"/><path d="M21 8c1.3 2.5 1.3 5.5 0 8"/></svg>
+      Tilt to look around
+    </button>
     <span class="float-tag t2" aria-hidden="true">Spatial UI</span>
     <span class="float-tag t3" aria-hidden="true">Since 2016</span>
     <figure class="portrait">
@@ -773,13 +786,16 @@ document.querySelectorAll('[data-yt]').forEach(el => {
     el.innerHTML = ''; el.appendChild(f);
   });
 });
-// Head-tracked hero: the scene tilts toward the cursor like turning your head in a headset.
+// Head-tracked hero: the scene tilts toward the cursor (desktop) or follows the
+// phone's tilt sensor (mobile), like turning your head in a headset.
 (() => {
   const hero = document.querySelector('.hero');
   if (!hero || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const MAX_Y = 8, MAX_X = 6;            // degrees (only the photo side tilts)
   let tx = 0, ty = 0, cx = 0, cy = 0, t = 0;
-  let pointer = false, visible = true, raf = 0;
+  let pointer = false, visible = true, raf = 0, lastMotion = 0;
+  const clamp = (v, m) => Math.max(-m, Math.min(m, v));
+
   hero.addEventListener('pointermove', e => {
     if (e.pointerType === 'touch') return;
     const r = hero.getBoundingClientRect();
@@ -788,9 +804,48 @@ document.querySelectorAll('[data-yt]').forEach(el => {
     tx = nx * 2 * MAX_Y; ty = -ny * 2 * MAX_X; pointer = true;
   });
   hero.addEventListener('pointerleave', () => { pointer = false; });
+
+  // ---- phone tilt (DeviceOrientation) ----
+  let base = null;                       // how the visitor is holding the phone
+  const onOrient = e => {
+    if (e.beta == null || e.gamma == null) return;
+    const angle = (screen.orientation && screen.orientation.angle) || window.orientation || 0;
+    let lr = e.gamma, fb = e.beta;       // portrait
+    if (angle === 90)  { lr = e.beta;  fb = -e.gamma; }
+    if (angle === -90 || angle === 270) { lr = -e.beta; fb = e.gamma; }
+    if (!base) base = { lr, fb };
+    base.lr += (lr - base.lr) * 0.0015;  // slowly re-centre (~10 s) if their grip changes
+    base.fb += (fb - base.fb) * 0.0015;
+    tx = clamp((lr - base.lr) * 0.45, MAX_Y);
+    ty = clamp(-(fb - base.fb) * 0.35, MAX_X);
+    lastMotion = performance.now();
+  };
+  const listen = () => window.addEventListener('deviceorientation', onOrient);
+  const touchDevice = matchMedia('(pointer: coarse)').matches;
+  const needsPermission = typeof DeviceOrientationEvent !== 'undefined' &&
+                          typeof DeviceOrientationEvent.requestPermission === 'function';
+  if (touchDevice) {
+    if (needsPermission) {                // iPhone / iPad: ask on a tap
+      const btn = document.getElementById('motion-btn');
+      if (btn) {
+        btn.hidden = false;
+        btn.addEventListener('click', async () => {
+          try {
+            if (await DeviceOrientationEvent.requestPermission() === 'granted') listen();
+          } catch (_) { /* denied or unavailable: keep the idle drift */ }
+          btn.hidden = true;
+        });
+      }
+    } else {
+      listen();                           // Android: no prompt needed
+    }
+  }
+
   const tick = () => {
-    if (!pointer) { t += 0.006; tx = Math.sin(t) * 2.6; ty = Math.sin(t * 1.37) * 1.6; }
-    cx += (tx - cx) * 0.08; cy += (ty - cy) * 0.08;
+    const motion = performance.now() - lastMotion < 1000;
+    if (!pointer && !motion) { t += 0.006; tx = Math.sin(t) * 2.6; ty = Math.sin(t * 1.37) * 1.6; }
+    const k = motion ? 0.15 : 0.08;
+    cx += (tx - cx) * k; cy += (ty - cy) * k;
     hero.style.setProperty('--ry', cx.toFixed(3));
     hero.style.setProperty('--rx', cy.toFixed(3));
     raf = visible ? requestAnimationFrame(tick) : 0;

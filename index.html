@@ -10,7 +10,11 @@
 <meta property="og:title" content="Rohan Singh | XR & Unreal Engine UI Engineer">
 <meta property="og:description" content="Unreal Engine interfaces, editor tools and plugins in C++, UMG and Slate.">
 <meta property="og:url" content="https://rohansingh.pro/">
-<meta property="og:image" content="https://rohansingh.pro/assets/work/twin-twins.webp">
+<meta property="og:image" content="https://rohansingh.pro/assets/me/og-rohan.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Rohan Singh, standing outdoors in a navy jacket">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#141517">
 <meta name="color-scheme" content="dark">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23141517'/%3E%3Crect x='3' y='3' width='58' height='58' rx='11' fill='none' stroke='%23ffb454' stroke-width='3'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-size='26' font-weight='700' fill='%23e9e7e3' text-anchor='middle'%3ERS%3C/text%3E%3C/svg%3E">
@@ -24,6 +28,7 @@
   "name": "Rohan Singh",
   "jobTitle": "Lead Extended Reality (XR) Software Engineer",
   "url": "https://rohansingh.pro/",
+  "image": "https://rohansingh.pro/assets/me/rohan-portrait.webp",
   "email": "mailto:rohan@rohansingh.pro",
   "address": {"@type": "PostalAddress", "addressLocality": "Austin", "addressRegion": "TX", "addressCountry": "US"},
   "alumniOf": [{"@type": "CollegeOrUniversity", "name": "Portland State University"}, {"@type": "CollegeOrUniversity", "name": "Ranchi University"}],
@@ -107,7 +112,23 @@ a { color: inherit; }
   mask-image: radial-gradient(ellipse 70% 80% at 70% 30%, #000 10%, transparent 70%);
   -webkit-mask-image: radial-gradient(ellipse 70% 80% at 70% 30%, #000 10%, transparent 70%);
 }
-.hero-grid { position: relative; display: grid; grid-template-columns: 1.25fr .9fr; gap: 56px; align-items: center; }
+.hero-grid { position: relative; display: grid; grid-template-columns: 1.15fr 1fr; gap: 56px; align-items: center; }
+
+/* portrait with the details panel floating over its lower-left corner */
+.hero-visual { position: relative; justify-self: end; width: 100%; max-width: 440px; margin-bottom: 72px; }
+.portrait {
+  position: relative; margin: 0; aspect-ratio: 4 / 5; border-radius: 20px; overflow: hidden;
+  border: 1px solid var(--line-2); background: var(--panel);
+  box-shadow: 0 40px 80px -40px rgba(0,0,0,.75);
+}
+.portrait img { width: 100%; height: 100%; object-fit: cover; }
+.portrait::after {
+  content: ""; position: absolute; inset: auto 0 0 0; height: 45%; border-radius: 0 0 20px 20px; pointer-events: none;
+  background: linear-gradient(to top, rgba(20,21,23,.55), transparent);
+}
+.facts { position: absolute; left: -88px; bottom: -64px; width: 360px; }
+.facts .props { font-size: 13.5px; }
+.facts .props div { grid-template-columns: 84px 1fr; padding: 8px 14px; }
 .eyebrow { font-family: var(--mono); font-size: 13px; color: var(--accent); letter-spacing: .02em; margin: 0 0 18px; display: flex; align-items: center; gap: 10px; }
 .eyebrow::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #5ad17a; box-shadow: 0 0 0 4px rgba(90,209,122,.15); }
 h1 {
@@ -267,12 +288,16 @@ dialog p { text-align: center; color: var(--text-2); font-family: var(--mono); f
 
 /* ---------- responsive ---------- */
 @media (max-width: 960px) {
+  .hero-visual { justify-self: center; max-width: 420px; }
+  .facts { left: -48px; }
   .hero-grid, .case { grid-template-columns: 1fr; gap: 40px; }
   .cards, .skills { grid-template-columns: 1fr 1fr; }
   .grid { grid-template-columns: 1fr 1fr; }
   .shot img { height: 440px; }
 }
 @media (max-width: 720px) {
+  .hero-visual { max-width: none; margin-bottom: 0; }
+  .facts { position: relative; left: auto; bottom: auto; width: auto; margin: -72px 12px 0; }
   .wrap { padding: 0 16px; }
   .nav-links { display: none; }
   .nav .btn { margin-left: auto; }
@@ -322,17 +347,20 @@ dialog p { text-align: center; color: var(--text-2); font-family: var(--mono); f
       </div>
     </div>
 
-    <aside class="panel" aria-label="Quick facts">
+    <div class="hero-visual">
+    <figure class="portrait">
+      <img src="assets/me/rohan-portrait.webp" srcset="assets/me/rohan-portrait-480.webp 480w, assets/me/rohan-portrait.webp 800w" sizes="(max-width: 720px) 92vw, (max-width: 960px) 420px, 440px" width="800" height="1000" alt="Rohan Singh, standing outdoors in a navy jacket and glasses" fetchpriority="high">
+    </figure>
+    <aside class="panel facts" aria-label="Quick facts">
       <div class="panel-head"><span class="dots"><i></i><i></i><i></i></span>Details · RohanSingh</div>
       <dl class="props">
         <div><dt>Role</dt><dd>Lead XR Software Engineer, AURA XR Systems</dd></div>
-        <div><dt>Focus</dt><dd><span class="chip accent">UI systems</span><span class="chip">XR</span><span class="chip">Editor tools</span></dd></div>
         <div><dt>Stack</dt><dd><span class="chip">C++</span><span class="chip">Slate</span><span class="chip">UMG</span><span class="chip">Blueprints</span><span class="chip">Qt</span></dd></div>
         <div><dt>On Fab</dt><dd>3 free plugins for Unreal Engine</dd></div>
         <div><dt>Education</dt><dd>M.S. Computer Science, Portland State (GPA 3.93)</dd></div>
-        <div><dt>Since</dt><dd>2016, shipping C++ and Unreal UI</dd></div>
       </dl>
     </aside>
+    </div>
   </div>
 </header>
 

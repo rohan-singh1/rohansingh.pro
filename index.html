@@ -248,7 +248,20 @@ h3 { font-family: var(--display); font-weight: 600; letter-spacing: -.015em; fon
   background: var(--panel); border: 1px solid var(--line-2); border-radius: var(--radius); overflow: hidden;
   display: flex; flex-direction: column; transition: border-color .2s, transform .2s;
 }
-.card:hover { border-color: var(--muted); transform: translateY(-2px); }
+.card:hover { border-color: var(--muted); }
+
+/* 3D tilt for the plugin cards (driven by the script at the bottom) */
+[data-tilt] {
+  position: relative; transform-style: preserve-3d; will-change: transform;
+  transform: perspective(900px) rotateX(calc(var(--tx, 0) * 1deg)) rotateY(calc(var(--ty, 0) * 1deg));
+  transition: border-color .2s, background .15s;
+}
+[data-tilt]::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 2;
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,.11), transparent 55%);
+  opacity: var(--sheen, 0); transition: opacity .3s;
+}
+[data-tilt].is-tilting { --sheen: 1; z-index: 3; }
 .card-img { aspect-ratio: 16 / 9; background: var(--bg-2); border-bottom: 1px solid var(--line); }
 .card-img img { width: 100%; height: 100%; object-fit: cover; }
 .card-body { padding: 20px 20px 22px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
@@ -425,7 +438,7 @@ dialog p { text-align: center; color: var(--text-2); font-family: var(--mono); f
     </div>
 
     <div class="cards">
-      <article class="card">
+      <article class="card" data-tilt="7">
         <div class="card-img"><img src="assets/work/fab-color-picker.webp" width="1280" height="720" alt="Blueprint Color Picker: Unreal's color wheel with RGB, HSV and hex fields" loading="lazy"></div>
         <div class="card-body">
           <h3>Blueprint Color Picker</h3>
@@ -438,7 +451,7 @@ dialog p { text-align: center; color: var(--text-2); font-family: var(--mono); f
         </div>
       </article>
 
-      <article class="card">
+      <article class="card" data-tilt="7">
         <div class="card-img"><img src="assets/work/fab-json-tree-viewer.webp" width="1280" height="720" alt="JSON Tree Viewer logo: curly braces around indented colored bars" loading="lazy"></div>
         <div class="card-body">
           <h3>JSON Tree Viewer</h3>
@@ -451,7 +464,7 @@ dialog p { text-align: center; color: var(--text-2); font-family: var(--mono); f
         </div>
       </article>
 
-      <article class="card">
+      <article class="card" data-tilt="7">
         <div class="card-img"><img src="assets/work/fab-search-bar.webp" width="1280" height="720" alt="Blueprint Search Bar: a rounded Slate search box" loading="lazy"></div>
         <div class="card-body">
           <h3>Blueprint Search Bar</h3>
@@ -795,6 +808,7 @@ document.querySelectorAll('[data-yt]').forEach(el => {
   let tx = 0, ty = 0, cx = 0, cy = 0, t = 0;
   let pointer = false, visible = true, raf = 0, lastMotion = 0;
   const clamp = (v, m) => Math.max(-m, Math.min(m, v));
+  const shared = window.__rsMotion = { x: 0, y: 0, t: 0 };   // read by the card tilt below
 
   hero.addEventListener('pointermove', e => {
     if (e.pointerType === 'touch') return;
@@ -819,6 +833,7 @@ document.querySelectorAll('[data-yt]').forEach(el => {
     tx = clamp((lr - base.lr) * 0.45, MAX_Y);
     ty = clamp(-(fb - base.fb) * 0.35, MAX_X);
     lastMotion = performance.now();
+    shared.x = tx / MAX_Y; shared.y = ty / MAX_X; shared.t = lastMotion;
   };
   const listen = () => window.addEventListener('deviceorientation', onOrient);
   const touchDevice = matchMedia('(pointer: coarse)').matches;
@@ -854,6 +869,50 @@ document.querySelectorAll('[data-yt]').forEach(el => {
     visible = en.isIntersecting;
     if (visible && !raf) raf = requestAnimationFrame(tick);
   }).observe(hero);
+})();
+
+// Tilt for the plugin cards: follows the cursor on hover, or the phone's tilt.
+(() => {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const els = [...document.querySelectorAll('[data-tilt]')];
+  const st = new Map();
+  let raf = 0;
+  const kick = () => { if (!raf) raf = requestAnimationFrame(tick); };
+  const io = new IntersectionObserver(es => es.forEach(e => { st.get(e.target).vis = e.isIntersecting; }), { rootMargin: '80px' });
+  els.forEach(el => {
+    const s = { max: +el.dataset.tilt || 6, tx: 0, ty: 0, cx: 0, cy: 0, mx: 50, my: 50, hover: false, vis: false };
+    st.set(el, s); io.observe(el);
+    el.addEventListener('pointermove', e => {
+      if (e.pointerType === 'touch') return;
+      const r = el.getBoundingClientRect();
+      const nx = (e.clientX - r.left) / r.width, ny = (e.clientY - r.top) / r.height;
+      s.ty = (nx - 0.5) * 2 * s.max; s.tx = -(ny - 0.5) * 2 * s.max;
+      s.mx = nx * 100; s.my = ny * 100; s.hover = true;
+      el.classList.add('is-tilting'); kick();
+    });
+    el.addEventListener('pointerleave', () => { s.hover = false; s.tx = s.ty = 0; el.classList.remove('is-tilting'); kick(); });
+  });
+  window.addEventListener('deviceorientation', kick);   // only fires once motion access exists
+  function tick() {
+    raf = 0;
+    const m = window.__rsMotion, motion = m && performance.now() - m.t < 1000;
+    let again = motion;
+    st.forEach((s, el) => {
+      if (!s.vis && !s.hover && Math.abs(s.cx) + Math.abs(s.cy) < 0.01) return;
+      if (motion && !s.hover) {                           // phone: half the hero's strength
+        s.ty = m.x * s.max * 0.6; s.tx = m.y * s.max * 0.6;
+        s.mx = 50 + m.x * 40; s.my = 50 - m.y * 40;
+      } else if (!s.hover) { s.tx = s.ty = 0; }             // sensor stopped: ease back flat
+      s.cx += (s.tx - s.cx) * 0.14; s.cy += (s.ty - s.cy) * 0.14;
+      if (Math.abs(s.tx - s.cx) + Math.abs(s.ty - s.cy) > 0.02) again = true;
+      el.style.setProperty('--tx', s.cx.toFixed(2));
+      el.style.setProperty('--ty', s.cy.toFixed(2));
+      el.style.setProperty('--mx', s.mx.toFixed(1) + '%');
+      el.style.setProperty('--my', s.my.toFixed(1) + '%');
+      el.style.setProperty('--sheen', s.hover ? '' : (motion && s.vis ? '0.6' : ''));
+    });
+    if (again) kick();
+  }
 })();
 </script>
 </body>

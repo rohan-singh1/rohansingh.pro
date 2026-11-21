@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found | Rohan Singh</title>
+<meta name="robots" content="noindex">
+<meta name="color-scheme" content="dark light">
+<script>
+  (function () {
+    var t = null;
+    try { t = localStorage.getItem('theme'); } catch (e) {}
+    if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    document.documentElement.dataset.theme = t;
+  })();
+</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23141517'/%3E%3Crect x='3' y='3' width='58' height='58' rx='11' fill='none' stroke='%23ffb454' stroke-width='3'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-size='26' font-weight='700' fill='%23e9e7e3' text-anchor='middle'%3ERS%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet">
+<style>
+:root { --bg: #141517; --panel: #202124; --panel-2: #26282c; --line: #2f3136; --line-2: #3a3d43; --text: #e9e7e3; --text-2: #b4b1ab; --muted: #85827c; --accent: #ffb454; --accent-ink: #1a1206; }
+:root[data-theme="light"] { --bg: #f7f6f3; --panel: #ffffff; --panel-2: #f3f1ec; --line: #e5e2db; --line-2: #d5d1c8; --text: #1a1917; --text-2: #4d4a45; --muted: #7d7870; --accent: #b35c00; --accent-ink: #ffffff; color-scheme: light; }
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; min-height: 100dvh; display: grid; place-items: center; padding: 24px 16px; background: var(--bg); color: var(--text); font: 16px/1.6 "Inter", system-ui, -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing: antialiased; }
+body::before { content: ""; position: fixed; inset: 0; pointer-events: none; opacity: .5; background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: 48px 48px; mask-image: radial-gradient(ellipse 60% 60% at 50% 45%, #000 10%, transparent 70%); -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 45%, #000 10%, transparent 70%); }
+main { position: relative; text-align: center; max-width: 520px; }
+.kicker { font: 13px/1 "JetBrains Mono", ui-monospace, Menlo, monospace; color: var(--accent); margin: 0 0 14px; }
+h1 { font: 600 clamp(64px, 18vw, 120px)/1 "Space Grotesk", "Inter", system-ui, sans-serif; letter-spacing: -.04em; margin: 0 0 14px; }
+p { color: var(--text-2); font-size: 18px; margin: 0 0 28px; }
+.cta { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.btn { display: inline-flex; align-items: center; font: 600 14.5px/1 "Inter", system-ui, sans-serif; padding: 12px 18px; border-radius: 10px; text-decoration: none; border: 1px solid var(--line-2); color: var(--text); background: var(--panel); }
+.btn:hover { border-color: var(--muted); background: var(--panel-2); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+</style>
+</head>
+<body>
+<main>
+  <p class="kicker">// 404 · out of bounds</p>
+  <h1>404</h1>
+  <p>There's nothing at this address. The page may have moved, or the link may be mistyped.</p>
+  <div class="cta">
+    <a class="btn primary" href="/">Back to the homepage</a>
+    <a class="btn" href="/resume/">Resume</a>
+    <a class="btn" href="/photography/">Photography</a>
+  </div>
+</main>
+</body>
+</html>
